@@ -1,10 +1,12 @@
 package co.edu.unbosque.revista.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.Optional;
 
-import co.edu.unbosque.revista.entity.Admin;
+import org.springframework.data.repository.CrudRepository;
 import co.edu.unbosque.revista.entity.Usuario;
 
 public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
+
+	Optional<Usuario> findByUsuario(String usuario);
 
 }
