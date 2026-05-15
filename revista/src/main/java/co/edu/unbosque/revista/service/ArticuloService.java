@@ -8,7 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import co.edu.unbosque.revista.dto.ArticuloDTO;
 import co.edu.unbosque.revista.entity.Articulo;
@@ -23,21 +22,26 @@ public class ArticuloService implements CRUDOPERATION<ArticuloDTO>{
 	@Autowired
 	private AdminService aService;
 	@Autowired
+	private UsuarioService uService;
+	@Autowired
 	private Gson gson;
 	@Override
 	public int create(ArticuloDTO data) {
-		
-		
+		if(uService.getRolUsuario() == "EDITOR" || aService.isLoggedadmin()) {
 		Articulo entity = mapper.map(data, Articulo.class);
 		arRep.save(entity);
 		ArticuloDTO dto = mapper.map(entity, ArticuloDTO.class);
-		String json = gson.toJson(dto);		
+		gson.toJson(dto);		
 		return 0;
+		}
+		else {
+		return 1;
+		}
 	}
 
 	@Override
 	public String getAll() {
-		if (!aService.isLoggedadmin()) {
+		if (!(aService.isLoggedadmin() || uService.getRolUsuario() == "EDITOR")) {
 			return null;
 		}
 
@@ -77,8 +81,41 @@ public class ArticuloService implements CRUDOPERATION<ArticuloDTO>{
 
 	@Override
 	public int updateById(Long id, ArticuloDTO data) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (!aService.isLoggedadmin()) {
+			return 1;
+		}
+		
+		Optional<Articulo> encontrado = arRep.findById(id);
+		if(encontrado.isPresent()) {
+			ArticuloDTO temp = mapper.map(encontrado.get(), ArticuloDTO.class);
+			temp.setNombreArticulo(data.getNombreArticulo());
+			temp.setContenido(data.getContenido());
+			temp.setGenero(data.getGenero());
+			temp.setTipo(data.getTipo());
+			temp.setAutor(data.getAutor()); // cuadrar con el usuarioLogueado
+			
+			Articulo entity = mapper.map(temp, Articulo.class);
+			entity.setId(id);
+			arRep.save(entity);
+			return 0;
+		}
+		return 2;
+	}
+	public List<ArticuloDTO> findByTipoArtiulo(String tipoArticulo) {
+
+		Optional<List<Articulo>> encontrados = arRep.findByTipoArticulo(tipoArticulo);
+
+		if (!(tipoArticulo.equals("horoscopo") || tipoArticulo.equals("noticia"))) {
+			return null;
+		}
+
+		List<ArticuloDTO> dtoList = new ArrayList<>();
+
+		if (encontrados.isPresent() && !encontrados.get().isEmpty()) {
+			encontrados.get().forEach(entity -> dtoList.add(mapper.map(entity, ArticuloDTO.class)));
+		}
+
+		return dtoList;
 	}
 
 }

@@ -21,6 +21,8 @@ public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 	@Autowired
 	private AdminService aService;
 
+	private Usuario usuarioLogueado;
+
 	@Override
 	public int create(UsuarioDTO data) {
 		Optional<Usuario> encontrado = uRep.findByUsuario(data.getUsuario());
@@ -49,7 +51,7 @@ public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 
 	@Override
 	public int deleteById(Long id) {
-		if (!aService.isLoggedadmin()) {
+		if (!aService.isLoggedadmin()) { // verificar esto con el JWT
 			return 2;
 		}
 		if (uRep.existsById(id)) {
@@ -75,4 +77,28 @@ public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 		return 0;
 	}
 
+	public int login(String usuario, String contrasenia) {
+		Optional<Usuario> encontrado = uRep.findByUsuario(usuario);
+		if (encontrado.isPresent() && encontrado.get().getContrasenia().equals(contrasenia)) {
+			usuarioLogueado = encontrado.get();
+			return 0;
+		}
+		return 1;
+	}
+
+	public boolean isLogged() {
+		return usuarioLogueado != null;
+	}
+
+	public void logout() {
+		usuarioLogueado = null;
+	}
+	
+	public String getRolUsuario() {
+		return "" + usuarioLogueado.getRol();
+	}
+	public String getNombreUsuario() {
+		return usuarioLogueado.getUsuario();
+	}
+  
 }
