@@ -22,6 +22,7 @@ public class ArticuloService implements CRUDOPERATION<ArticuloDTO>{
 	private ModelMapper mapper;
 	@Autowired
 	private AdminService aService;
+	@Autowired
 	private Gson gson;
 	@Override
 	public int create(ArticuloDTO data) {
