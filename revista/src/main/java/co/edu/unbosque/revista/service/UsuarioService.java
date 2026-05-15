@@ -1,37 +1,72 @@
 package co.edu.unbosque.revista.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.gson.Gson;
 import co.edu.unbosque.revista.dto.UsuarioDTO;
+import co.edu.unbosque.revista.entity.Usuario;
+import co.edu.unbosque.revista.repository.UsuarioRepository;
 
 public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 
+	@Autowired
+	private UsuarioRepository uRep;
+	@Autowired
+	private ModelMapper mapper;
+	@Autowired
+	private AdminService aService;
+
 	@Override
 	public int create(UsuarioDTO data) {
-		// TODO Auto-generated method stub
+		Optional<Usuario> encontrado = uRep.findByUsuario(data.getUsuario());
+		if (encontrado.isPresent()) {
+			return 2;
+		}
+		/*
+		 * try { LanzadorException.verificarCedulaValida(data.getCedula()); } catch
+		 * (CedulaException e) { return 1; }
+		 */ Usuario entity = mapper.map(data, Usuario.class);
+		uRep.save(entity);
 		return 0;
 	}
 
 	@Override
 	public String getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		if (!aService.isLoggedadmin()) {
+			return null;
+		}
+		Gson gson = new Gson();
+		List<Usuario> entityList = (List<Usuario>) uRep.findAll();
+		List<UsuarioDTO> dtoList = new ArrayList<>();
+		entityList.forEach(entity -> dtoList.add(mapper.map(entity, UsuarioDTO.class)));
+		return gson.toJson(dtoList);
 	}
 
 	@Override
 	public int deleteById(Long id) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (!aService.isLoggedadmin()) {
+			return 2;
+		}
+		if (uRep.existsById(id)) {
+			uRep.deleteById(id);
+			return 0;
+		}
+		return 1;
 	}
 
 	@Override
 	public long count() {
-		// TODO Auto-generated method stub
-		return 0;
+		return uRep.count();
 	}
 
 	@Override
 	public boolean exist(Long id) {
-		// TODO Auto-generated method stub
-		return false;
+		return uRep.existsById(id);
 	}
 
 	@Override

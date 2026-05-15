@@ -8,8 +8,6 @@ import jakarta.persistence.Id;
 
 public class UsuarioDTO {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String usuario;
 	private String contrasenia;

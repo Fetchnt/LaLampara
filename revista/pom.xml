@@ -66,6 +66,11 @@
 			<artifactId>spring-boot-starter-webmvc-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>co.edu.unbosque</groupId>
+			<artifactId>SpringFirstApp</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
