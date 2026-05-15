@@ -21,8 +21,6 @@ public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 	@Autowired
 	private AdminService aService;
 
-	private Usuario usuarioLogueado;
-
 	@Override
 	public int create(UsuarioDTO data) {
 		Optional<Usuario> encontrado = uRep.findByUsuario(data.getUsuario());
