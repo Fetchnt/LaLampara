@@ -42,7 +42,7 @@ public class ArticuloService implements CRUDOPERATION<ArticuloDTO>{
 	@Override
 	public String getAll() {
 		if (!(aService.isLoggedadmin() || uService.getRolUsuario() == "EDITOR")) {
-			return null;
+			return "[]";
 		}
 
 		List<Articulo> entityList = (List<Articulo>) arRep.findAll();
