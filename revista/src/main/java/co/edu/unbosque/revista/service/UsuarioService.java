@@ -27,18 +27,19 @@ public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 	private JwtUtil jwtUtil;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	private Usuario usuarioLogueado;
 
 	@Override
 	public int create(UsuarioDTO data) {
-	    Optional<Usuario> encontrado = uRep.findByUsuario(data.getUsuario());
-	    if (encontrado.isPresent()) return 2;
+		Optional<Usuario> encontrado = uRep.findByUsuario(data.getUsuario());
+		if (encontrado.isPresent())
+			return 2;
 
-	    Usuario entity = mapper.map(data, Usuario.class);
-	    entity.setContrasenia(passwordEncoder.encode(data.getContrasenia())); // ✅
-	    uRep.save(entity);
-	    return 0;
+		Usuario entity = mapper.map(data, Usuario.class);
+		entity.setContrasenia(passwordEncoder.encode(data.getContrasenia())); // ✅
+		uRep.save(entity);
+		return 0;
 	}
 
 	@Override
@@ -75,19 +76,21 @@ public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 		return 0;
 	}
 
-
-
 	public String login(String usuario, String contrasenia) {
-	    Optional<Usuario> encontrado = uRep.findByUsuario(usuario);
-	    
-	    if (!encontrado.isPresent()) {
-	        return "USER_NOT_FOUND";
-	    }
-	    
-	    if (!passwordEncoder.matches(contrasenia, encontrado.get().getContrasenia())) {
-	        return "WRONG_PASSWORD";
-	    }
-	    return jwtUtil.generateToken((UserDetails) encontrado.get());
+		Optional<Usuario> encontrado = uRep.findByUsuario(usuario);
+
+		if (!encontrado.isPresent()) {
+			return "USER_NOT_FOUND";
+		}
+
+		// ✅ Log temporal
+		System.out.println("Rol del usuario: " + encontrado.get().getRol());
+		System.out.println("Authorities: " + encontrado.get().getAuthorities());
+
+		if (!passwordEncoder.matches(contrasenia, encontrado.get().getContrasenia())) {
+			return "WRONG_PASSWORD";
+		}
+		return jwtUtil.generateToken((UserDetails) encontrado.get());
 	}
 
 	public boolean isLogged() {
@@ -97,12 +100,13 @@ public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 	public void logout() {
 		usuarioLogueado = null;
 	}
-	
+
 	public String getRolUsuario() {
 		return "" + usuarioLogueado.getRol();
 	}
+
 	public String getNombreUsuario() {
 		return usuarioLogueado.getUsuario();
 	}
-  
+
 }
