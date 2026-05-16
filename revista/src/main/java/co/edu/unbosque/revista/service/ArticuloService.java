@@ -97,7 +97,8 @@ public class ArticuloService implements CRUDOPERATION<ArticuloDTO>{
 		Optional<List<Articulo>> encontrados = arRep.findByTipoArticulo(tipoArticulo);
 
 		if (!(tipoArticulo.equals("horoscopo") || tipoArticulo.equals("noticia"))) {
-			return null;
+			List<ArticuloDTO> niceList = new ArrayList<>();
+			return niceList;
 		}
 
 		List<ArticuloDTO> dtoList = new ArrayList<>();
