@@ -11,5 +11,5 @@ import co.edu.unbosque.revista.entity.Articulo;
 public interface ArticuloRepository extends CrudRepository<Articulo, Long> {
 
 	Optional<List<Articulo>> findByTipo(TipoRevista tipoArticulo);
-	
+	Optional<Articulo> findById(Long id);
 }

@@ -6,12 +6,15 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import co.edu.unbosque.revista.dto.UsuarioDTO;
 import co.edu.unbosque.revista.entity.Usuario;
 import co.edu.unbosque.revista.repository.UsuarioRepository;
+import co.edu.unbosque.revista.security.JwtUtil;
 
 @Service
 public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
@@ -20,22 +23,22 @@ public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 	private UsuarioRepository uRep;
 	@Autowired
 	private ModelMapper mapper;
+	@Autowired
+	private JwtUtil jwtUtil;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	private Usuario usuarioLogueado;
 
 	@Override
 	public int create(UsuarioDTO data) {
-		Optional<Usuario> encontrado = uRep.findByUsuario(data.getUsuario());
-		if (encontrado.isPresent()) {
-			return 2;
-		}
-		/*
-		 * try { LanzadorException.verificarCedulaValida(data.getCedula()); } catch
-		 * (CedulaException e) { return 1; }
-		 */
-		Usuario entity = mapper.map(data, Usuario.class);
-		uRep.save(entity);
-		return 0;
+	    Optional<Usuario> encontrado = uRep.findByUsuario(data.getUsuario());
+	    if (encontrado.isPresent()) return 2;
+
+	    Usuario entity = mapper.map(data, Usuario.class);
+	    entity.setContrasenia(passwordEncoder.encode(data.getContrasenia())); // ✅
+	    uRep.save(entity);
+	    return 0;
 	}
 
 	@Override
@@ -72,13 +75,19 @@ public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 		return 0;
 	}
 
-	public int login(String usuario, String contrasenia) {
-		Optional<Usuario> encontrado = uRep.findByUsuario(usuario);
-		if (encontrado.isPresent() && encontrado.get().getContrasenia().equals(contrasenia)) {
-			usuarioLogueado = encontrado.get();
-			return 0;
-		}
-		return 1;
+
+
+	public String login(String usuario, String contrasenia) {
+	    Optional<Usuario> encontrado = uRep.findByUsuario(usuario);
+	    
+	    if (!encontrado.isPresent()) {
+	        return "USER_NOT_FOUND";
+	    }
+	    
+	    if (!passwordEncoder.matches(contrasenia, encontrado.get().getContrasenia())) {
+	        return "WRONG_PASSWORD";
+	    }
+	    return jwtUtil.generateToken((UserDetails) encontrado.get());
 	}
 
 	public boolean isLogged() {
