@@ -16,7 +16,7 @@ import co.edu.unbosque.revista.entity.Articulo;
 import co.edu.unbosque.revista.repository.ArticuloRepository;
 
 @Service
-public class ArticuloService implements CRUDOPERATION<ArticuloDTO>{
+public class ArticuloService implements CRUDOPERATION<ArticuloDTO> {
 
 	@Autowired
 	private ArticuloRepository arRep;
@@ -26,26 +26,18 @@ public class ArticuloService implements CRUDOPERATION<ArticuloDTO>{
 	private UsuarioService uService;
 	@Autowired
 	private Gson gson;
+
 	@Override
 	public int create(ArticuloDTO data) {
-		if(uService.getRolUsuario() == "EDITOR") {
 		Articulo entity = mapper.map(data, Articulo.class);
 		arRep.save(entity);
 		ArticuloDTO dto = mapper.map(entity, ArticuloDTO.class);
-		gson.toJson(dto);		
+		gson.toJson(dto);
 		return 0;
-		}
-		else {
-		return 1;
-		}
 	}
 
 	@Override
 	public String getAll() {
-		if (!(uService.getRolUsuario() == "EDITOR")) {
-			return "[]";
-		}
-
 		List<Articulo> entityList = (List<Articulo>) arRep.findAll();
 		List<ArticuloDTO> dtoList = new ArrayList<>();
 
@@ -78,16 +70,16 @@ public class ArticuloService implements CRUDOPERATION<ArticuloDTO>{
 	}
 
 	@Override
-	public int updateById(Long id, ArticuloDTO data) {		
+	public int updateById(Long id, ArticuloDTO data) {
 		Optional<Articulo> encontrado = arRep.findById(id);
-		if(encontrado.isPresent()) {
+		if (encontrado.isPresent()) {
 			ArticuloDTO temp = mapper.map(encontrado.get(), ArticuloDTO.class);
 			temp.setNombreArticulo(data.getNombreArticulo());
 			temp.setContenido(data.getContenido());
 			temp.setGenero(data.getGenero());
 			temp.setTipo(data.getTipo());
 			temp.setAutor(data.getAutor()); // cuadrar con el usuarioLogueado
-			
+			temp.setComentario(data.getComentario());
 			Articulo entity = mapper.map(temp, Articulo.class);
 			entity.setId(id);
 			arRep.save(entity);
@@ -95,7 +87,8 @@ public class ArticuloService implements CRUDOPERATION<ArticuloDTO>{
 		}
 		return 2;
 	}
-	public List<ArticuloDTO> findByTipoArtiulo(TipoRevista tipoArticulo) {
+
+	public List<ArticuloDTO> findByTipoArticulo(TipoRevista tipoArticulo) {
 
 		Optional<List<Articulo>> encontrados = arRep.findByTipo(tipoArticulo);
 		List<ArticuloDTO> dtoList = new ArrayList<>();
@@ -105,6 +98,19 @@ public class ArticuloService implements CRUDOPERATION<ArticuloDTO>{
 		}
 
 		return dtoList;
+	}
+
+	public int comentario(Long id, String comentario) {
+		Optional<Articulo> encontrado = arRep.findById(id);
+		if (encontrado.isPresent()) {
+			ArticuloDTO temp = mapper.map(encontrado.get(), ArticuloDTO.class); 
+			temp.setComentario(comentario);
+			Articulo entity = mapper.map(temp, Articulo.class);
+			entity.setId(id);
+			arRep.save(entity);
+			return 0;
+		}
+		return 2;
 	}
 
 }

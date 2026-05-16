@@ -53,27 +53,27 @@ public class SecurityConfig {
    */
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(
-            auth ->
-                auth.requestMatchers("/auth/**")
-                    .permitAll()
-                    .requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
-                    .permitAll()
-                    .requestMatchers("/usuario/register", "/usuario/login")
-                    .permitAll()
-                    .requestMatchers("/usuario/**")
-                    .hasRole("ADMIN")
-                    .requestMatchers("/articulo/**")
-                    .hasRole("EDITOR")
-                    .anyRequest()
-                    .authenticated())
-        .sessionManagement(
-            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authenticationProvider(authenticationProvider())
-        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+	  http.csrf(csrf -> csrf.disable())
+	    .authorizeHttpRequests(auth -> auth
+	        .requestMatchers("/auth/**").permitAll()
+	        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
+	        .permitAll()
+	        .requestMatchers("/usuario/register", "/usuario/login")
+	        .permitAll()
+	        .requestMatchers("/articulo/leerarticulo")
+	        .hasRole("USUARIO")
+	        .requestMatchers("/articulo/**")
+	        .hasAnyRole("ADMIN", "EDITOR")
+	        .requestMatchers("/usuario/**").hasRole("ADMIN")
 
-    return http.build();
+	        .anyRequest().authenticated()
+	    )
+	    .sessionManagement(session -> 
+	        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+	    .authenticationProvider(authenticationProvider())
+	    .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+	  
+	  return http.build();
   }
 
   /**

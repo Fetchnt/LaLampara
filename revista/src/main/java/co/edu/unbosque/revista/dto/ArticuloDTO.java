@@ -14,18 +14,21 @@ public class ArticuloDTO {
 	@Enumerated(EnumType.STRING)
 	private TipoRevista tipo;
 	private String autor;
+	private String comentario;
 
 	public ArticuloDTO() {
 		super();
 	}
 
-	public ArticuloDTO(String nombreArticulo, String contenido, String genero, TipoRevista tipo, String autor) {
+	public ArticuloDTO(String nombreArticulo, String contenido, String genero, TipoRevista tipo, String autor,
+			String comentario) {
 		super();
 		this.nombreArticulo = nombreArticulo;
 		this.contenido = contenido;
 		this.genero = genero;
 		this.tipo = tipo;
 		this.autor = autor;
+		this.comentario = comentario;
 	}
 
 	public long getId() {
@@ -76,26 +79,23 @@ public class ArticuloDTO {
 		this.autor = autor;
 	}
 
-	public ArticuloDTO(long id, String nombreArticulo, String contenido, String genero, TipoRevista tipo,
-			String autor) {
-		super();
-		this.id = id;
-		this.nombreArticulo = nombreArticulo;
-		this.contenido = contenido;
-		this.genero = genero;
-		this.tipo = tipo;
-		this.autor = autor;
+	public String getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
 	}
 
 	@Override
 	public String toString() {
-		return "Articulo [id=" + id + ", nombreArticulo=" + nombreArticulo + ", contenido=" + contenido + ", genero="
-				+ genero + ", tipo=" + tipo + ", autor=" + autor + "]";
+		return "ArticuloDTO [id=" + id + ", nombreArticulo=" + nombreArticulo + ", contenido=" + contenido + ", genero="
+				+ genero + ", tipo=" + tipo + ", autor=" + autor + ", comentario=" + comentario + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(autor, contenido, genero, id, nombreArticulo, tipo);
+		return Objects.hash(autor, comentario, contenido, genero, id, nombreArticulo, tipo);
 	}
 
 	@Override
@@ -107,9 +107,10 @@ public class ArticuloDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		ArticuloDTO other = (ArticuloDTO) obj;
-		return Objects.equals(autor, other.autor) && Objects.equals(contenido, other.contenido)
-				&& Objects.equals(genero, other.genero) && id == other.id
+		return Objects.equals(autor, other.autor) && Objects.equals(comentario, other.comentario)
+				&& Objects.equals(contenido, other.contenido) && Objects.equals(genero, other.genero) && id == other.id
 				&& Objects.equals(nombreArticulo, other.nombreArticulo) && tipo == other.tipo;
 	}
 
+	
 }
