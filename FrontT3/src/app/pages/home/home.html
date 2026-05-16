@@ -1,0 +1,28 @@
+<div class="home-container">
+  <h1>Bienvenido a ConfiBosque, {{ getUsuario() }}</h1>
+  <p class="subtitulo">¿Qué deseas leer hoy?</p>
+
+  <div class="tarjetas">
+    <div class="tarjeta" *ngIf="tieneAcceso(['USUARIO', 'EDITOR', 'COMENTADOR', 'ADMIN'])">
+      <h2>📰 Noticias</h2>
+      <p>Mantente informado con las últimas noticias.</p>
+      <button (click)="irA('/noticias')">Ver noticias</button>
+    </div>
+
+    <div class="tarjeta" *ngIf="tieneAcceso(['USUARIO', 'EDITOR', 'COMENTADOR', 'ADMIN'])">
+      <h2>🔮 Horóscopos</h2>
+      <p>Descubre lo que el universo tiene para ti.</p>
+      <button (click)="irA('/horoscopos')">Ver horóscopos</button>
+    </div>
+
+    <div class="tarjeta tarjeta-admin" *ngIf="tieneAcceso(['ADMIN'])">
+      <h2>⚙️ Administración</h2>
+      <p>Gestiona usuarios y contenido de la revista.</p>
+      <button (click)="irA('/admin')">Ir al panel</button>
+    </div>
+  </div>
+
+  <div class="sin-acceso" *ngIf="tieneAcceso(['SIN_AUTENTICAR'])">
+    <p>Tu cuenta no tiene acceso a contenido. Contacta al administrador.</p>
+  </div>
+</div>

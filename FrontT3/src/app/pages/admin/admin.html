@@ -1,0 +1,64 @@
+<div class="page-container">
+  <h1>⚙️ Panel de Administración</h1>
+
+  <!-- USUARIOS -->
+  <div class="seccion">
+    <h2>Usuarios registrados</h2>
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Usuario</th>
+        <th>Rol</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let u of getUsuarios()">
+        <td>{{ u.id }}</td>
+        <td>{{ u.usuario }}</td>
+        <td>
+          <select [(ngModel)]="u.rol" (change)="cambiarRol(u)">
+            <option value="ADMIN">Admin</option>
+            <option value="EDITOR">Editor</option>
+            <option value="COMENTADOR">Comentador</option>
+            <option value="USUARIO">Usuario</option>
+            <option value="SIN_AUTENTICAR">Sin autenticar</option>
+          </select>
+        </td>
+        <td>
+          <button class="btn-eliminar" (click)="eliminarUsuario(u.id)">Eliminar</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ARTICULOS -->
+  <div class="seccion">
+    <h2>Crear artículo</h2>
+    <div class="formulario">
+      <div class="campo">
+        <label>Título</label>
+        <input type="text" [(ngModel)]="nuevoArticulo.nombreArticulo" placeholder="Título del artículo" />
+      </div>
+      <div class="campo">
+        <label>Contenido</label>
+        <textarea [(ngModel)]="nuevoArticulo.contenido" placeholder="Contenido del artículo"></textarea>
+      </div>
+      <div class="campo">
+        <label>Género</label>
+        <input type="text" [(ngModel)]="nuevoArticulo.genero" placeholder="Ej: Tecnología, Ciencia..." />
+      </div>
+      <div class="campo">
+        <label>Tipo</label>
+        <select [(ngModel)]="nuevoArticulo.tipo">
+          <option value="NOTICIA">Noticia</option>
+          <option value="HOROSCOPO">Horóscopo</option>
+        </select>
+      </div>
+      <button class="btn-crear" (click)="crearArticulo()">Crear artículo</button>
+      <div *ngIf="mensajeArticulo" class="exito-msg">{{ mensajeArticulo }}</div>
+    </div>
+  </div>
+</div>

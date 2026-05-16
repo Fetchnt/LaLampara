@@ -1,0 +1,71 @@
+<div class="login-container">
+
+  <!-- LOGIN -->
+  <div class="login-box" *ngIf="!modoRegistro">
+    <h2>ConfiBosque</h2>
+    <p class="subtitulo">Inicia sesión para continuar</p>
+
+    <div *ngIf="error" class="error-msg">
+      Usuario o contraseña incorrectos
+    </div>
+
+    <div class="campo">
+      <label>Usuario</label>
+      <input type="text" [(ngModel)]="usuarioInput" placeholder="Ingresa tu usuario" />
+    </div>
+
+    <div class="campo">
+      <label>Contraseña</label>
+      <input type="password" [(ngModel)]="contraseniaInput" placeholder="Ingresa tu contraseña" />
+    </div>
+
+    <button (click)="onLogin()">Ingresar</button>
+
+    <p class="cambiar-modo">
+      ¿No tienes cuenta?
+      <span (click)="toggleModo()">Regístrate aquí</span>
+    </p>
+  </div>
+
+  <!-- REGISTRO -->
+  <div class="login-box" *ngIf="modoRegistro">
+    <h2>Revista</h2>
+    <p class="subtitulo">Crea tu cuenta</p>
+
+    <div *ngIf="errorRegistro" class="error-msg">
+      {{ errorRegistro }}
+    </div>
+
+    <div *ngIf="exitoRegistro" class="exito-msg">
+      ¡Cuenta creada! Ya puedes iniciar sesión.
+    </div>
+
+    <div class="campo">
+      <label>Usuario</label>
+      <input type="text" [(ngModel)]="nuevoUsuario" placeholder="Ingresa un usuario" />
+    </div>
+
+    <div class="campo">
+      <label>Contraseña</label>
+      <input type="password" [(ngModel)]="nuevaContrasenia" placeholder="Ingresa una contraseña" />
+    </div>
+
+    <div class="campo">
+      <label>Tipo de cuenta</label>
+      <select [(ngModel)]="nuevoRol">
+        <option value="" disabled>Selecciona un rol</option>
+        <option value="USUARIO">Usuario</option>
+        <option value="COMENTADOR">Comentador</option>
+        <option value="EDITOR">Editor</option>
+      </select>
+    </div>
+
+    <button (click)="onRegistro()">Crear cuenta</button>
+
+    <p class="cambiar-modo">
+      ¿Ya tienes cuenta?
+      <span (click)="toggleModo()">Inicia sesión</span>
+    </p>
+  </div>
+
+</div>
