@@ -1,0 +1,30 @@
+<div class="page-container">
+  <h1>📰 Noticias</h1>
+
+  <div class="articulos">
+    <div class="articulo" *ngFor="let articulo of articulos">
+      <div class="articulo-header">
+        <span class="genero">{{ articulo.genero }}</span>
+        <span class="autor">Por {{ articulo.autor }}</span>
+      </div>
+      <h2>{{ articulo.nombreArticulo }}</h2>
+      <p>{{ articulo.contenido }}</p>
+
+      <!-- Solo COMENTADOR y EDITOR y ADMIN pueden comentar -->
+      <div class="comentarios-section" *ngIf="puedecomentar()">
+        <textarea [(ngModel)]="comentarios[articulo.id]"
+                  placeholder="Escribe un comentario...">
+        </textarea>
+        <button (click)="comentar(articulo.id)">Comentar</button>
+      </div>
+
+      <div class="lista-comentarios" *ngIf="getComentarios(articulo.id).length > 0">
+        <h4>Comentarios</h4>
+        <div class="comentario" *ngFor="let c of getComentarios(articulo.id)">
+          <span class="comentario-autor">{{ c.autor }}</span>
+          <span class="comentario-texto">{{ c.contenido }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

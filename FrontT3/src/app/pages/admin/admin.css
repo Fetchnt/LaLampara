@@ -1,0 +1,118 @@
+.page-container {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.seccion {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.seccion h2 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.1rem;
+  border-bottom: 2px solid #c0392b;
+  padding-bottom: 0.5rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+th {
+  background-color: #c0392b;
+  color: white;
+  padding: 0.6rem 1rem;
+  text-align: left;
+}
+
+td {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid #eee;
+  color: #444;
+}
+
+td select {
+  padding: 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.btn-eliminar {
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.btn-eliminar:hover {
+  background-color: #a93226;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+label {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+input, textarea, select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.btn-crear {
+  align-self: flex-start;
+  padding: 0.5rem 1.2rem;
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.btn-crear:hover {
+  background-color: #a93226;
+}
+
+.exito-msg {
+  background-color: #e6f4ea;
+  color: #27ae60;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}

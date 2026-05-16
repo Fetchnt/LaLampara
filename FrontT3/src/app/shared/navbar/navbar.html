@@ -1,0 +1,15 @@
+<nav class="navbar">
+  <span class="marca">CONFIBOSQUE</span>
+
+  <div class="links">
+    <a routerLink="/home">Inicio</a>
+    <a routerLink="/noticias" *ngIf="tieneAcceso(['USUARIO', 'EDITOR', 'COMENTADOR', 'ADMIN'])">Noticias</a>
+    <a routerLink="/horoscopos" *ngIf="tieneAcceso(['USUARIO', 'EDITOR', 'COMENTADOR', 'ADMIN'])">Horóscopos</a>
+    <a routerLink="/admin" *ngIf="tieneAcceso(['ADMIN'])">Admin</a>
+  </div>
+
+  <div class="usuario" *ngIf="sesionActiva">
+    <span>{{ getUsuario() }} — {{ getRol() }}</span>
+    <button (click)="onLogout()">Salir</button>
+  </div>
+</nav>
