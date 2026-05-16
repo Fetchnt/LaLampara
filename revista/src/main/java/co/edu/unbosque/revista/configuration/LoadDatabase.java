@@ -4,8 +4,6 @@ import co.edu.unbosque.proyectofinal.repository.AdminRepository;
 import co.edu.unbosque.revista.entity.Rol;
 import co.edu.unbosque.revista.entity.Usuario;
 import co.edu.unbosque.revista.repository.UsuarioRepository;
-import co.edu.unbosque.springfirstapp.model.User;
-import co.edu.unbosque.springfirstapp.repository.UserRepository;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

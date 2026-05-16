@@ -6,12 +6,14 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import co.edu.unbosque.revista.dto.UsuarioDTO;
 import co.edu.unbosque.revista.entity.Usuario;
 import co.edu.unbosque.revista.repository.UsuarioRepository;
 
+@Service
 public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 
 	@Autowired
@@ -30,7 +32,8 @@ public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 		/*
 		 * try { LanzadorException.verificarCedulaValida(data.getCedula()); } catch
 		 * (CedulaException e) { return 1; }
-		 */ Usuario entity = mapper.map(data, Usuario.class);
+		 */
+		Usuario entity = mapper.map(data, Usuario.class);
 		uRep.save(entity);
 		return 0;
 	}
