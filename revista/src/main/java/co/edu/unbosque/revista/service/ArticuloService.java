@@ -6,13 +6,16 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 
 import co.edu.unbosque.revista.dto.ArticuloDTO;
+import co.edu.unbosque.revista.dto.TipoRevista;
 import co.edu.unbosque.revista.entity.Articulo;
 import co.edu.unbosque.revista.repository.ArticuloRepository;
 
+@Service
 public class ArticuloService implements CRUDOPERATION<ArticuloDTO>{
 
 	@Autowired
@@ -92,15 +95,9 @@ public class ArticuloService implements CRUDOPERATION<ArticuloDTO>{
 		}
 		return 2;
 	}
-	public List<ArticuloDTO> findByTipoArtiulo(String tipoArticulo) {
+	public List<ArticuloDTO> findByTipoArtiulo(TipoRevista tipoArticulo) {
 
-		Optional<List<Articulo>> encontrados = arRep.findByTipoArticulo(tipoArticulo);
-
-		if (!(tipoArticulo.equals("horoscopo") || tipoArticulo.equals("noticia"))) {
-			List<ArticuloDTO> niceList = new ArrayList<>();
-			return niceList;
-		}
-
+		Optional<List<Articulo>> encontrados = arRep.findByTipo(tipoArticulo);
 		List<ArticuloDTO> dtoList = new ArrayList<>();
 
 		if (encontrados.isPresent() && !encontrados.get().isEmpty()) {
