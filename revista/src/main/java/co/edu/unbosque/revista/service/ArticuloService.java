@@ -20,14 +20,12 @@ public class ArticuloService implements CRUDOPERATION<ArticuloDTO>{
 	@Autowired
 	private ModelMapper mapper;
 	@Autowired
-	private AdminService aService;
-	@Autowired
 	private UsuarioService uService;
 	@Autowired
 	private Gson gson;
 	@Override
 	public int create(ArticuloDTO data) {
-		if(uService.getRolUsuario() == "EDITOR" || aService.isLoggedadmin()) {
+		if(uService.getRolUsuario() == "EDITOR") {
 		Articulo entity = mapper.map(data, Articulo.class);
 		arRep.save(entity);
 		ArticuloDTO dto = mapper.map(entity, ArticuloDTO.class);
@@ -41,7 +39,7 @@ public class ArticuloService implements CRUDOPERATION<ArticuloDTO>{
 
 	@Override
 	public String getAll() {
-		if (!(aService.isLoggedadmin() || uService.getRolUsuario() == "EDITOR")) {
+		if (!(uService.getRolUsuario() == "EDITOR")) {
 			return "[]";
 		}
 
@@ -54,9 +52,6 @@ public class ArticuloService implements CRUDOPERATION<ArticuloDTO>{
 
 	@Override
 	public int deleteById(Long id) {
-		if (!aService.isLoggedadmin()) {
-			return 2;
-		}
 		Optional<Articulo> encontrado = arRep.findById(id);
 
 		if (encontrado.isPresent()) {
@@ -80,11 +75,7 @@ public class ArticuloService implements CRUDOPERATION<ArticuloDTO>{
 	}
 
 	@Override
-	public int updateById(Long id, ArticuloDTO data) {
-		if (!aService.isLoggedadmin()) {
-			return 1;
-		}
-		
+	public int updateById(Long id, ArticuloDTO data) {		
 		Optional<Articulo> encontrado = arRep.findById(id);
 		if(encontrado.isPresent()) {
 			ArticuloDTO temp = mapper.map(encontrado.get(), ArticuloDTO.class);

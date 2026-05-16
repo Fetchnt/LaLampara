@@ -18,9 +18,7 @@ public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 	private UsuarioRepository uRep;
 	@Autowired
 	private ModelMapper mapper;
-	@Autowired
-	private AdminService aService;
-
+	
 	private Usuario usuarioLogueado;
 
 	@Override
@@ -39,9 +37,6 @@ public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 
 	@Override
 	public String getAll() {
-		if (!aService.isLoggedadmin()) {
-			return null;
-		}
 		Gson gson = new Gson();
 		List<Usuario> entityList = (List<Usuario>) uRep.findAll();
 		List<UsuarioDTO> dtoList = new ArrayList<>();
@@ -51,9 +46,6 @@ public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 
 	@Override
 	public int deleteById(Long id) {
-		if (!aService.isLoggedadmin()) { // verificar esto con el JWT
-			return 2;
-		}
 		if (uRep.existsById(id)) {
 			uRep.deleteById(id);
 			return 0;
