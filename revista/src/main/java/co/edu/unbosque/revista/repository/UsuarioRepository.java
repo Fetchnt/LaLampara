@@ -8,5 +8,5 @@ import co.edu.unbosque.revista.entity.Usuario;
 public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
 
 	Optional<Usuario> findByUsuario(String usuario);
-
+	Optional<Usuario> findById(Long id);
 }

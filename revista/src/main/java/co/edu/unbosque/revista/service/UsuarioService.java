@@ -11,7 +11,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
+
+import co.edu.unbosque.revista.dto.ArticuloDTO;
 import co.edu.unbosque.revista.dto.UsuarioDTO;
+import co.edu.unbosque.revista.entity.Articulo;
 import co.edu.unbosque.revista.entity.Usuario;
 import co.edu.unbosque.revista.repository.UsuarioRepository;
 import co.edu.unbosque.revista.security.JwtUtil;
@@ -56,11 +59,10 @@ public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 		if (uRep.existsById(id)) {
 			uRep.deleteById(id);
 			return 0;
+		} else {
+			return 1;
 		}
-		else {
-			return 1;			
-		}
-		
+
 	}
 
 	@Override
@@ -75,8 +77,23 @@ public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 
 	@Override
 	public int updateById(Long id, UsuarioDTO data) {
-		// TODO Auto-generated method stub
-		return 0;
+		Optional<Usuario> encontrado = uRep.findById(id);
+		if (encontrado.isPresent()) {
+			if (data.getRol().toString() == "ADMIN") {
+				return 1;
+			} else {
+				UsuarioDTO temp = mapper.map(encontrado.get(), UsuarioDTO.class);
+				temp.setUsuario(data.getUsuario());
+				temp.setContrasenia(data.getContrasenia());
+				temp.setRol(data.getRol());
+				Usuario entity = mapper.map(temp, Usuario.class);
+				entity.setId(id);
+				uRep.save(entity);
+				return 0;
+			}
+		} else {
+			return 2;
+		}
 	}
 
 	public String login(String usuario, String contrasenia) {
