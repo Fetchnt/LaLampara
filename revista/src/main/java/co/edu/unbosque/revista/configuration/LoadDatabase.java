@@ -68,8 +68,8 @@ public class LoadDatabase {
         log.info("El usuario normal ya existe, omitiendo la creación del editor...");
       } else {
         Usuario editorUser = new Usuario("editor", passwordEncoder.encode(passwordEditor), Rol.EDITOR);
-        userRepo.save(editorUser);
-        log.info("Precargando editor");
+			userRepo.save(editorUser);
+			log.info("Precargando editor");
       }
       Optional<Usuario> encontradoComentarista = userRepo.findByUsuario("comentarista");
       if (encontradoComentarista.isPresent()) {

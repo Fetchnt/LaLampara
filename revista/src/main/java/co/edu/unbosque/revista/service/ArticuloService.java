@@ -104,6 +104,11 @@ public class ArticuloService implements CRUDOPERATION<ArticuloDTO> {
 		Optional<Articulo> encontrado = arRep.findById(id);
 		if (encontrado.isPresent()) {
 			ArticuloDTO temp = mapper.map(encontrado.get(), ArticuloDTO.class); 
+			temp.setNombreArticulo(encontrado.get().getNombreArticulo());
+			temp.setContenido(encontrado.get().getContenido());
+			temp.setGenero(encontrado.get().getGenero());
+		//	temp.setTipo(encontrado.get().getTipo());
+			temp.setAutor(encontrado.get().getAutor());
 			temp.setComentario(comentario);
 			Articulo entity = mapper.map(temp, Articulo.class);
 			entity.setId(id);

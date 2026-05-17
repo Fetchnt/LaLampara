@@ -37,7 +37,7 @@ public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 			return 2;
 
 		Usuario entity = mapper.map(data, Usuario.class);
-		entity.setContrasenia(passwordEncoder.encode(data.getContrasenia())); // ✅
+		entity.setContrasenia(passwordEncoder.encode(data.getContrasenia()));
 		uRep.save(entity);
 		return 0;
 	}
@@ -57,7 +57,10 @@ public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 			uRep.deleteById(id);
 			return 0;
 		}
-		return 1;
+		else {
+			return 1;			
+		}
+		
 	}
 
 	@Override
@@ -82,11 +85,6 @@ public class UsuarioService implements CRUDOPERATION<UsuarioDTO> {
 		if (!encontrado.isPresent()) {
 			return "USER_NOT_FOUND";
 		}
-
-		// ✅ Log temporal
-		System.out.println("Rol del usuario: " + encontrado.get().getRol());
-		System.out.println("Authorities: " + encontrado.get().getAuthorities());
-
 		if (!passwordEncoder.matches(contrasenia, encontrado.get().getContrasenia())) {
 			return "WRONG_PASSWORD";
 		}

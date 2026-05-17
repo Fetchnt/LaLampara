@@ -57,6 +57,20 @@ public class UsuarioController {
 		return new ResponseEntity<>(uService.getAll(), HttpStatus.OK);
 	}
 	
+	@DeleteMapping("/eliminarusuario")
+	public ResponseEntity<String> eliminarUsuario(@RequestBody Long id) {
+	 int status = uService.deleteById(id);
+	 if(status == 0) {
+			return new ResponseEntity<>("Usuario Eliminado", HttpStatus.OK);
+	 }
+	 else if (status == 1) {
+			return new ResponseEntity<>("Usuario no encontrado", HttpStatus.CONFLICT);
+	 }
+	 else {
+			return new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST); 
+	 }
+		
+	}
 
 
 }
