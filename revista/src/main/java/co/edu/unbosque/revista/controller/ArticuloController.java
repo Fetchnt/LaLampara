@@ -39,8 +39,9 @@ public class ArticuloController {
 	@PostMapping("/darcomentarioaarticulo")
 	public ResponseEntity<String> comentarArticulo(@RequestParam Long id, @RequestParam String comentario) {
 		int status = arService.comentario(id, comentario);
-		if (status == 0)
-			return new ResponseEntity<>("Comentario realizado con exito!", HttpStatus.OK);
+		if (status == 0) {
+			return new ResponseEntity<>("Comentario realizado con exito!", HttpStatus.OK);			
+		}
 		return new ResponseEntity<>("Error", HttpStatus.CONFLICT);
 	}
 
