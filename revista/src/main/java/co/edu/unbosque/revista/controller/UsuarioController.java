@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -52,25 +53,37 @@ public class UsuarioController {
 		return new ResponseEntity<>(resultado, HttpStatus.OK);
 	}
 
+	@PutMapping("/actualizarusuario")
+	public ResponseEntity<String> actualizar(@RequestBody UsuarioDTO datos) {
+		int status = uService.updateById(datos.getId(), datos);
+		if (status == 0) {
+			return new ResponseEntity<>("Usuario Actualizado", HttpStatus.OK);
+		} else if (status == 1) {
+			return new ResponseEntity<>("No se puede actualizar al rol 'ADMIN'", HttpStatus.OK);
+
+		} else {
+			return new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST);
+
+		}
+
+	}
+
 	@GetMapping("/mostrarusuarios")
 	public ResponseEntity<String> mostrarUsuarios() {
 		return new ResponseEntity<>(uService.getAll(), HttpStatus.OK);
 	}
-	
+
 	@DeleteMapping("/eliminarusuario")
 	public ResponseEntity<String> eliminarUsuario(@RequestBody Long id) {
-	 int status = uService.deleteById(id);
-	 if(status == 0) {
+		int status = uService.deleteById(id);
+		if (status == 0) {
 			return new ResponseEntity<>("Usuario Eliminado", HttpStatus.OK);
-	 }
-	 else if (status == 1) {
+		} else if (status == 1) {
 			return new ResponseEntity<>("Usuario no encontrado", HttpStatus.CONFLICT);
-	 }
-	 else {
-			return new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST); 
-	 }
-		
-	}
+		} else {
+			return new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST);
+		}
 
+	}
 
 }
